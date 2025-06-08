@@ -45,31 +45,39 @@ Both scripts can be run directly from the command line:
   ```
   This script contains a hardcoded Sudoku puzzle example within the file itself. It will print the solution to the console.
 
-- **Clue-Based Constraint Propagation Solver**:
+- **Clue-Based Constraint Propagation Solver (`sudoku-clue-solver.py`)**:
+  This script now uses a command-line interface (CLI) to solve Sudoku puzzles provided as a string.
+
+  **Installation for CLI:**
+  The CLI requires the `click` library. You can install it using pip:
   ```bash
-  python sudoku-clue-solver.py
+  pip install click
   ```
-  This script reads Sudoku puzzles from the `sudokus.txt` file.
 
-### Puzzle Input Format (`sudokus.txt`)
+  **Running the Solver via CLI:**
+  To solve a puzzle, use the `solve` command followed by the puzzle string:
+  ```bash
+  python sudoku-clue-solver.py solve "PUZZLE_STRING"
+  ```
 
-The `sudokus.txt` file is used by `sudoku-clue-solver.py` and should contain one or more Sudoku puzzles.
-- Each puzzle is represented as a single line of 81 characters.
-- Digits from `1` to `9` represent known numbers in the grid.
-- The `+` character (or any non-digit character, though `+` is conventional) represents an empty/unknown cell.
-- Puzzles are read row by row from left to right.
-- Multiple puzzles in the file should be separated by a line containing `--` (two hyphens).
+  **Puzzle String Format:**
+  The `PUZZLE_STRING` must be exactly 81 characters long, representing the 9x9 Sudoku grid row by row, from left to right.
+  - Use digits `1` through `9` for cells with known values.
+  - Use the `+` character for empty or unknown cells.
 
-Example entry in `sudokus.txt`:
-```
-++3+2++++1+8+4+79++++++5++++92+3+4++++++7++++++6+4+81+3++++2++++7+5+6+8++
---
-53++7++++6++195++++98++++6+8+++6+++34++8+3++17+++2+++6+6++++28++++419++5++++8++79
-```
-
-The solver will process each puzzle in the file and print its solution (or indicate if no solution was found or an error occurred) to the console, along with the runtime.
+  **Example:**
+  For a puzzle that starts with "5 3 . . 7 . . . ." in the first row, the string would begin "53++7++++...".
+  A full example command:
+  ```bash
+  python sudoku-clue-solver.py solve "53++7+++++6++195+++++98++++6+8+++6+++3+4++8+3++17+++2+++6+6++++28++++419++5++++8"
+  ```
+  The solver will print the solution to the console, along with the runtime. The `sudokus.txt` file is no longer directly used by this script for input but can serve as a source for puzzle strings.
 
 ## Dependencies
 
-These scripts are written in standard Python and do not require any external libraries beyond those included in the Python Standard Library.
+- The `brute-force-backtracking-solver.py` script is written in standard Python and does not require any external libraries beyond those included in the Python Standard Library.
+- The `sudoku-clue-solver.py` script requires the `click` library for its command-line interface.
+  ```bash
+  pip install click
+  ```
 The `tootools.py` file contains helper classes and functions used by the solvers and is part of this repository.

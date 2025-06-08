@@ -31,6 +31,7 @@ The overall strategy is as follows:
    valid candidates, indicating an invalid path in the backtracking search.
 """
 import re
+import click # Added click import
 from collections import namedtuple
 from copy import deepcopy
 from pprint import pprint
@@ -341,23 +342,33 @@ class Sudoku:
         return [Clue(_x, _y, _value) for _value in sorted(list(_candidate_values))]
 
 
-def _main():
-    with open('sudokus.txt') as _clues:
-        for _clues_input in _clues.read().split('--'):
-            with timeit("runtime"):
-                _sudoku = Sudoku()
-                _sudoku.process_input(_clues_input)
-                try:
-                    _sudoku.process_clues()
-                    print("NO SOLUTION")
-                except Solution as e:
-                    print("SOLVED")
-                    pprint(e.args[0])
-                except EmptyCell as e:
-                    print(f"ERROR: empty call at: {e.args}")
+def _main(puzzle_string: str): # Modified to accept puzzle_string
+    # Removed file reading logic, now processes a single puzzle_string
+    with timeit("runtime"):
+        _sudoku = Sudoku()
+        _sudoku.process_input(puzzle_string) # Use the passed puzzle_string
+        try:
+            _sudoku.process_clues()
+            print("NO SOLUTION")
+        except Solution as e:
+            print("SOLVED")
+            pprint(e.args[0])
+        except EmptyCell as e:
+            print(f"ERROR: empty call at: {e.args}")
 
+@click.group()
+def cli():
+    """A CLI for solving Sudoku puzzles."""
+    pass
+
+@cli.command()
+@click.argument('puzzle_string')
+def solve(puzzle_string: str):
+    """Solves a Sudoku puzzle given as a string."""
+    _main(puzzle_string)
 
 if __name__ == '__main__':
     # import cProfile
-    _main()
+    # _main() # Old way
     # cProfile.run('_main()')
+    cli() # Run the click CLI
