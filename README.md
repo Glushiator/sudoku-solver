@@ -55,22 +55,29 @@ Both scripts can be run directly from the command line:
   ```
 
   **Running the Solver via CLI:**
-  To solve a puzzle, use the `solve` command followed by the puzzle string:
-  ```bash
-  python sudoku-clue-solver.py solve "PUZZLE_STRING"
-  ```
+  You can solve a puzzle by providing the puzzle string directly as an argument or by specifying a file that contains the puzzle string.
 
-  **Puzzle String Format:**
-  The `PUZZLE_STRING` must be exactly 81 characters long, representing the 9x9 Sudoku grid row by row, from left to right.
-  - Use digits `1` through `9` for cells with known values.
-  - Use the `+` character for empty or unknown cells.
+  1.  **Using a direct puzzle string:**
+      ```bash
+      python sudoku-clue-solver.py solve "PUZZLE_STRING"
+      ```
+      -   The `PUZZLE_STRING` must be exactly 81 characters long.
+      -   Use digits `1` through `9` for known values and `+` for empty cells.
+      -   The string represents the 9x9 Sudoku grid row by row, from left to right.
+      -   Example: `python sudoku-clue-solver.py solve "53++7+++++6++195+++++98++++6+8+++6+++3+4++8+3++17+++2+++6+6++++28++++419++5++++8"`
 
-  **Example:**
-  For a puzzle that starts with "5 3 . . 7 . . . ." in the first row, the string would begin "53++7++++...".
-  A full example command:
-  ```bash
-  python sudoku-clue-solver.py solve "53++7+++++6++195+++++98++++6+8+++6+++3+4++8+3++17+++2+++6+6++++28++++419++5++++8"
-  ```
+  2.  **Using a file input:**
+      Use the `--file` (or `-f`) option to specify a path to a text file containing the puzzle.
+      ```bash
+      python sudoku-clue-solver.py solve --file path/to/your/puzzle.txt
+      ```
+      -   The file should contain a single line with the 81-character puzzle string.
+      -   The format of the puzzle string within the file is the same as described above.
+
+  **Input Requirements:**
+  -   You must provide either a direct puzzle string argument or use the `--file` option.
+  -   If both a direct puzzle string and a `--file` option are provided, the puzzle from the file specified by `--file` will be used.
+
   The solver will print the solution to the console, along with the runtime. The `sudokus.txt` file is no longer directly used by this script for input but can serve as a source for puzzle strings.
 
 ## Dependencies

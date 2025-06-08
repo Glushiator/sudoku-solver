@@ -362,10 +362,30 @@ def cli():
     pass
 
 @cli.command()
-@click.argument('puzzle_string')
-def solve(puzzle_string: str):
-    """Solves a Sudoku puzzle given as a string."""
-    _main(puzzle_string)
+@click.option(
+    '--file', '-f', 'file_path',
+    type=click.Path(exists=True, dir_okay=False, readable=True),
+    help='Path to a file containing the Sudoku puzzle string (81 characters).'
+)
+@click.argument('puzzle_string', required=False, default=None)
+@click.pass_context
+def solve(ctx, puzzle_string: Optional[str], file_path: Optional[str]):
+    """Solves a Sudoku puzzle provided either as a direct string or via a file."""
+    final_puzzle_string = None
+    if file_path:
+        with open(file_path, 'r') as f:
+            final_puzzle_string = f.read().strip()
+    elif puzzle_string:
+        final_puzzle_string = puzzle_string
+
+    if not final_puzzle_string:
+        ctx.fail("Either a puzzle string argument or a --file option must be provided.")
+
+    # Basic validation for puzzle string length (can be enhanced)
+    if len(final_puzzle_string) != 81:
+        ctx.fail(f"Puzzle string must be 81 characters long. Received {len(final_puzzle_string)} characters.")
+
+    _main(final_puzzle_string)
 
 if __name__ == '__main__':
     # import cProfile
